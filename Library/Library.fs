@@ -49,10 +49,10 @@ type Tesla(user: string, password: string, vin: string) =
         use! response = Async.AwaitTask (if get then client.GetAsync(uri) else client.PostAsync(uri, new StringContent(String.Empty)))
         response.EnsureSuccessStatusCode() |> ignore
         let! data = Async.AwaitTask (response.Content.ReadAsStringAsync())
-        printfn "DEBUG: %s -> %s" (sprintf "api/1/vehicles/%s/%s" id api) data
+        printfn "DEBUG: %s -> %s" uri data
         return data }
     let query api = call true api |> Async.RunSynchronously
-    let command = sprintf "command/%s" >> call false
+    let command = sprintf "command/%s" >> call false >> Async.RunSynchronously
     member this.MobileEnabled() = query "mobile_enabled"
     member this.ChargeState() = query "data_request/charge_state"
     member this.ClimateState() = query "data_request/climate_state"
