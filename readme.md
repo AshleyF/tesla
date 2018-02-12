@@ -1,5 +1,13 @@
 # Tesla API Library
 
+Simple library to control and query your Tesla!
+
+    let car = new Tesla("<your user>", "<your password>", "<your vin>")
+    car.ChargeState() |> printfn "ChargeState: %s"
+    car.FlashLights()
+    car.HonkHorn()
+    car.AutoConditioningStart()
+
 # APIs
 
 All APIs require an authentication token (`Authorization: Bearer: ****` header) which is acquired by the `oauth/token` API; given a user name and password to you Tesla account. Most vehicle command and status APIs have a vehicle ID embedded in the URI. This comes from the `id_s` property when listing vehicles (`vehicles` API).
@@ -258,11 +266,218 @@ Door state is `df` (driver front), `dr` (driver rear), `pf` (passenger front), `
 Aside from your vehicle ID, this takes an `on` and `password` (valet pin) parameter.
 
     POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/set_valet_mode?on=false&password=1234
+        Authorization: Bearer <your token>
 
     {
         "response": {
             "reason": "already off",
             "result": false
+        }
+    }
+
+## Reset Valet Pin
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/reset_valet_pin
+        Authorization: Bearer <your token>
+    
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Charge Port Door Open
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/charge_port_door_open
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "charging",
+            "result": false
+        }
+    }
+
+## Charge Standard
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/charge_standard
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "already_standard",
+            "result": false
+        }
+    }
+
+## Charge Max Range
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/charge_max_range
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Set Charge Limit
+
+Aside from your vehicle ID, this takes a `percent` parameter (0-100).
+
+Note: There seems to be a bug. It always sets to 50%.
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/set_charge_limit?percent=<percent>
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Charge Start
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/charge_start
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Charge Stop
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/charge_stop
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Flash Lights
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/flash_lights
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Honk Horn
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/honk_horn
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Door Unlock
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/door_unlock
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Door Lock
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/door_lock
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Set Temperatures
+
+Aside from your vehicle ID, this takes a `driver_temp` and `passenger_temp` parameter (float values).
+
+Note: Parameters are in units defined in GUI settings.
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/set_temps?driver_temp=<temp>&passenger_temp=<temp>
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Auto Conditioning Start (HVAC)
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/auto_conditioning_start
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Auto Conditioning Stop (HVAC)
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/auto_conditioning_stop
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Sun Roof Control
+
+Aside from your vehicle ID, this takes a `state` (`open`/`close`) and `percent` (0-100).
+
+Note: Returns 400 Bad Request for vehicles without a sun roof.
+
+    POST https://private-anon-d17699e3b8-timdorr.apiary-mock.com/api/1/vehicles/<your vehicle id>/command/sun_roof_control?state=<open/close>&percent=<percent>
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
+        }
+    }
+
+## Remote Start Drive
+
+Aside from your vehicle ID, this takes your `password` again in addition to the token header.
+
+    POST https://owner-api.teslamotors.com/api/1/vehicles/<your vehicle id>/command/remote_start_drive?password=<password>
+        Authorization: Bearer <your token>
+
+    {
+        "response": {
+            "reason": "",
+            "result": true
         }
     }
 
