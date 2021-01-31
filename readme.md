@@ -483,4 +483,4 @@ Aside from your vehicle ID, this takes your `password` again in addition to the 
 
 # Reference
 
-* https://timdorr.docs.apiary.io
+* https://tesla-api.timdorr.com/
